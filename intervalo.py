@@ -190,7 +190,7 @@ class Intervalo(object):
             elif self.hi == 0 :
                 return Intervalo(float("-inf"), 1.0/self.lo)
             else :
-                print 'Advertencia: El reciproco devuelve la uni—n de m‡s de un intervalo en forma de una lista'
+                # print 'Advertencia: El reciproco devuelve la uni—n de m‡s de un intervalo en forma de una lista'
                 return [Intervalo(float("-inf"), 1.0/self.lo), Intervalo(1.0/self.hi, float("inf"))]
         else:
             return Intervalo(1.0/self.hi,1.0/self.lo)
