@@ -8,15 +8,15 @@ math = numpy    # NB!
 
 class Intervalo(object):
     """
-    Se define la clase 'Intervalo', y los métodos para la aritmética básica de intervalos,
-    es decir, suma, resta, multiplicación y división. Se incluyen otras funciones
-    que serán útiles.
+    Se define la clase 'Intervalo', y los mÃˆtodos para la aritmÃˆtica bÂ·sica de intervalos,
+    es decir, suma, resta, multiplicaciÃ›n y divisiÃ›n. Se incluyen otras funciones
+    que serÂ·n Ë™tiles.
     """
     def __init__(self, lo, hi=None):
         """
         Definimos las propiedades del objeto Intervalo a partir de sus bordes,
-        lo y hi, donde lo <= hi. En el caso en que el intervalo sólo tenga
-        un número, éste se interpreta como un intervalo 'delgado' o 'degenerado'.
+        lo y hi, donde lo <= hi. En el caso en que el intervalo sÃ›lo tenga
+        un nË™mero, Ãˆste se interpreta como un intervalo 'delgado' o 'degenerado'.
         """
         if hi is None:
             hi = lo
@@ -30,7 +30,7 @@ class Intervalo(object):
         return "Intervalo [{},{}]".format(self.lo,self.hi)
     
     def __str__(self):
-        # Esta función sirve con 'print'
+        # Esta funciÃ›n sirve con 'print'
         return "[{},{}]".format(self.lo,self.hi)
 
     def _repr_html_(self):
@@ -41,7 +41,7 @@ class Intervalo(object):
     def _repr_latex_(self):
         return "$[{}, {}]$".format(self.lo, self.hi)
 
-    # Aquí vienen las operaciones aritméticas
+    # AquÃŒ vienen las operaciones aritmÃˆticas
     def __add__(self, otro):
         """
         Suma de intervalos
@@ -100,10 +100,10 @@ class Intervalo(object):
     def __rmul__(self, otro):
         return self * otro
 
-    # Ã‰sta es la funcion igualdad para intervalos
+    # âˆšÃ¢sta es la funcion igualdad para intervalos
     def __eq__(self, otro):
         """
-        función igualdad para intervalos 
+        funciÃ›n igualdad para intervalos 
 
         """
         try:
@@ -118,10 +118,10 @@ class Intervalo(object):
                 return False
   
 
-    # Intersección
+    # IntersecciÃ›n
     def __and__(self, otro):
         """
-        Intersección de intervalos
+        IntersecciÃ›n de intervalos
         Funciona con la sintaxis & (como el AND bitwise)
         """
         if not isinstance(otro,Intervalo):
@@ -135,7 +135,7 @@ class Intervalo(object):
             b = min( self.hi, otro.hi )
             return Intervalo(a,b)
     
-    # Intersección por la izquierda
+    # IntersecciÃ›n por la izquierda
     def __rand__(self, otro):
         """
         Interseccion de intervalos (por la izquierda)
@@ -167,20 +167,20 @@ class Intervalo(object):
             
         return Intervalo.__sub__(otro, self)
     
-    # Función contains
+    # FunciÃ›n contains
     def __contains__(self, otro):
         """
-        Devuelve un true o false si 'otro' está dentro del intervalo.
+        Devuelve un true o false si 'otro' estÂ· dentro del intervalo.
         En el caso de que otro sea un intervalo, se requiere que todos sus elementos
-        estén dentro para regresar true.
+        estÃˆn dentro para regresar true.
         """
         return otro & self == otro 
         
             
-    # Funcion recíproco
+    # Funcion recÃŒproco
     def reciprocal(self):
         """
-        Devuelve un intervalo con los valores recÃ­procos
+        Devuelve un intervalo con los valores recâˆšâ‰ procos
         """
         if 0 in self:
             # si el intervalo contiene el cero debe de aparecer un error
@@ -190,7 +190,7 @@ class Intervalo(object):
             elif self.hi == 0 :
                 return Intervalo(float("-inf"), 1.0/self.lo)
             else :
-                # print 'Advertencia: El reciproco devuelve la uni—n de m‡s de un intervalo en forma de una lista'
+                # print 'Advertencia: El reciproco devuelve la uniÃ³n de mÃ¡s de un intervalo en forma de una lista'
                 return [Intervalo(float("-inf"), 1.0/self.lo), Intervalo(1.0/self.hi, float("inf"))]
         else:
             return Intervalo(1.0/self.hi,1.0/self.lo)
@@ -198,7 +198,7 @@ class Intervalo(object):
     # division con denominadores que no contienen al cero    
     def __div__(self, otro):
         """
-        División
+        DivisiÃ›n
         """
         if not isinstance(otro, Intervalo):
             otro = Intervalo(otro)
@@ -209,10 +209,10 @@ class Intervalo(object):
         else:
             return self * otro.reciprocal()
     
-    # división reversa
+    # divisiÃ›n reversa
     def __rdiv__(self, otro):
         """
-        División revrsa para poder usar floats en el numerador
+        DivisiÃ›n revrsa para poder usar floats en el numerador
         """
         if not isinstance(otro, Intervalo):
             otro = Intervalo(otro)
@@ -227,7 +227,7 @@ class Intervalo(object):
         
         if isinstance(alpha, int):
             # caso donde el exponente es entero, en este caso los flotantes que pueden ser
-            # igualados a su forma entera entran en esta categoría (e.g. 2.0 == 2)
+            # igualados a su forma entera entran en esta categorÃŒa (e.g. 2.0 == 2)
             
             return self.pow_int(alpha)
             
@@ -239,10 +239,15 @@ class Intervalo(object):
             # cualquier otro caso el exponente se toma como real
             return self.pow_real(alpha)
 
+    def __rpow__(self,base):
+        
+        if not isinstance(base,Intervalo):
+            base=Intervalo(base)
+        return base**self
 
     def pow_int(self, n):
         """
-        Método para potencias enteras
+        MÃˆtodo para potencias enteras
         """
         # n: exponente
         if n > 0:
@@ -266,14 +271,14 @@ class Intervalo(object):
             
     def pow_real(self, n):
         """
-        Método para potencias con exponentes reales (que en este caso son flotantes)
+        MÃˆtodo para potencias con exponentes reales (que en este caso son flotantes)
         f(x) = x^a = exp(a*log(x))
         """
         return exp(n*log(self))
       
     #def pow_expint(self, otro):
     #    """
-    #    Función exponienciación de Intervalos con exponente Intervalo
+    #    FunciÃ›n exponienciaciÃ›n de Intervalos con exponente Intervalo
     #    """       
     #        
     #    res = self.restringir_dominio()
@@ -284,7 +289,7 @@ class Intervalo(object):
     
     def pow_expint(self, otro):
         """
-        Función exponienciación de Intervalos con exponente Intervalo
+        FunciÃ›n exponienciaciÃ›n de Intervalos con exponente Intervalo
         """       
             
         res = self.restringir_dominio()
@@ -346,36 +351,36 @@ class Intervalo(object):
         return max([abs(self.lo),abs(self.hi)])
 
     
-    # Relación < de intervalos.
+    # RelaciÃ›n < de intervalos.
     def __lt__(self,otro):
-        """Relación < de intervalos."""
+        """RelaciÃ›n < de intervalos."""
         
         try:
             return self.hi < otro.lo
         except:
             return self < Intervalo(otro)
 
-    # Relación > de intervalos.
+    # RelaciÃ›n > de intervalos.
     def __gt__(self,otro):
-        """Relación > de intervalos."""
+        """RelaciÃ›n > de intervalos."""
         
         try:
             return self.lo > otro.hi
         except:
             return self > Intervalo(otro)
 
-    #Relación <= de intervalos.
+    #RelaciÃ›n <= de intervalos.
     def __le__(self,otro):
-        """Relación <= de intervalos"""
+        """RelaciÃ›n <= de intervalos"""
     
         try: 
             return (self.lo <= otro.lo) and self.hi <= otro.hi  
         except: 
             return self <= Intervalo(otro)
 
-    #Relación >= de intervalos.
+    #RelaciÃ›n >= de intervalos.
     def __ge__(self,otro):
-        """Relación >= de intervalos"""
+        """RelaciÃ›n >= de intervalos"""
     
         try:
             return (self.lo >= otro.lo) and self.hi >= otro.hi
@@ -385,9 +390,9 @@ class Intervalo(object):
     def hull(self, otro):
         return Intervalo(min(self.lo,otro.lo),max(self.hi,otro.hi))
 
-    # Aquí se definirán funciones sobre intervalos
+    # AquÃŒ se definirÂ·n funciones sobre intervalos
 
-    ## NOTA: Implementación de David et al; me voy por la de AsTlan porque pasa
+    ## NOTA: ImplementaciÃ›n de David et al; me voy por la de AsTlan porque pasa
     ## un test correcto que la de David et al no pasa.
     #def cos(self):
     #
@@ -450,7 +455,7 @@ class Intervalo(object):
         
     def tan(self):
         """
-        Función tangente para intervalos
+        FunciÃ›n tangente para intervalos
         """
         #from scipy import inf
         pi = math.pi        
@@ -467,7 +472,7 @@ class Intervalo(object):
        
     def restringir_dominio(self, dominio=None):
         """
-        Función que restringe el dominio de un intervalo a valores no negativos.
+        FunciÃ›n que restringe el dominio de un intervalo a valores no negativos.
         Levanta un error si el intervalo es completamente negativo.
         """
 
